@@ -24,3 +24,6 @@ Para Vercel, importe o repositório como projeto Next.js sem definir `PAGES_BASE
 Fotografia editorial: [Oleg Prachuk, Pexels](https://www.pexels.com/photo/close-up-of-ceramic-mugs-standing-on-a-wooden-surface-15440831/), [licença](https://www.pexels.com/license/).
 
 Fotografia secundária: [PNW Production, Pexels](https://www.pexels.com/photo/stack-of-ceramic-bowl-and-plates-on-wooden-surface-8251786/).
+
+### Funil demonstrativo
+Escolha da peça → acabamento → sacola → revisão e conclusão fictícia. Experimento futuro: testar nomes abaixo das cores versus nome após seleção, usando acerto ao montar uma sacola com dois acabamentos em teste moderado. Nenhum pagamento, cadastro ou evento é coletado.
