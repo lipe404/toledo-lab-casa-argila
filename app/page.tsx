@@ -2,6 +2,8 @@
 
 import { useState } from 'react';
 
+const photos = process.env.NEXT_PUBLIC_BASE_PATH ?? '';
+
 const pieces = [
   { name:'Caneca Curva', kind:'caneca', price:86, description:'Alça generosa, corpo arredondado e borda delicada. Uma peça para as pausas de todos os dias.' },
   { name:'Vaso Orla', kind:'vaso', price:148, description:'Silhueta larga na base e gargalo aberto. Pensado para um único ramo ou para ficar como escultura.' },
@@ -77,7 +79,7 @@ export default function Page() {
     <main id="conteudo">
       <section className="hero frame" id="inicio">
         <div className="copy"><p className="eyebrow">COLEÇÃO FORMA DO DIA</p><h1>Terra feita <i>objeto.</i></h1><p className="lead">Texturas de terra, curvas sem pressa. Uma coleção imaginada para o ritual de todos os dias.</p><a className="primary" href="#colecao">Explorar a coleção</a></div>
-        <div className="cover"><ObjectArt kind="vaso" finish={finishes[0]} id="hero"/><span>VASO ORLA · TERRACOTA</span></div>
+        <figure className="cover"><img src={photos+'/hero.webp'} alt="Canecas artesanais agrupadas sobre uma superfície de madeira" width="1200" height="900" fetchPriority="high"/><figcaption>REFERÊNCIA VISUAL · CERÂMICA ARTESANAL</figcaption></figure>
       </section>
       <section className="catalog" id="colecao">
         <div className="frame">
@@ -93,6 +95,7 @@ export default function Page() {
           </div>
         </div>
       </section>
+      <section className="atelier frame" id="atelie"><div className="materials"><ObjectArt kind="vaso" finish={finishes[0]} id="materials"/></div><div><p className="eyebrow">DO BARRO À PEÇA</p><h2>Feita de gesto e matéria.</h2><p>Imaginamos a Casa Argila como um pequeno ateliê de formas utilitárias e superfícies táteis, com tons inspirados no barro, na folha e na areia.</p><details><summary>O que muda com o acabamento?</summary><p>A silhueta é a mesma. A variação troca a paleta da peça e aparece separadamente na sacola.</p></details><details><summary>As peças da vitrine são reais?</summary><p>Não. As imagens da vitrine são ilustrações em SVG. A foto editorial representa a atmosfera do conceito, não um catálogo real.</p></details></div></section>
       <section className="basket frame" id="sacola"><h2>Sua sacola.</h2>{cart.length===0?<p>Nenhuma peça adicionada.</p>:<ul>{cart.map(row=><li key={row.key}><div><b>{pieces[row.product].name}</b><span>{finishes[row.finish].name} · {row.qty} {row.qty===1?'unidade':'unidades'}</span></div><div className="cart-right"><b>{money.format(pieces[row.product].price*row.qty)}</b><button aria-label={`Remover uma unidade de ${pieces[row.product].name}, ${finishes[row.finish].name}`} onClick={()=>remove(row.key)}>Remover 1</button></div></li>)}</ul>}<p className="subtotal">Subtotal simulado <b>{money.format(total)}</b></p></section>
     </main>
     <footer><div className="frame"><b>casa argila</b><p>Marca e preços fictícios. Nenhum pedido é enviado, e nenhuma informação pessoal é solicitada.</p><a href="#inicio">Voltar ao início</a></div></footer>
