@@ -63,10 +63,11 @@ export default function Page() {
   const picked=pieces[product];
   const qty = cart.reduce((sum,row)=>sum+row.qty,0);
   const total = cart.reduce((sum,row)=>sum+pieces[row.product].price*row.qty,0);
-  function add() {
+  function addRow(product:number,finish:number) {
+    const item=pieces[product];
     const key=`${product}:${finish}`;
     setCart(current=>current.some(row=>row.key===key)?current.map(row=>row.key===key?{...row,qty:row.qty+1}:row):[...current,{key,product,finish,qty:1}]);
-    setAnnouncement(`${picked.name} em ${finishes[finish].name} adicionada à sacola demonstrativa.`);
+    setAnnouncement(`Adicionado: ${item.name}, acabamento ${finishes[finish].name}.`);
   }
   function remove(key:string) {
     setCart(current=>current.flatMap(row => row.key!==key?[row]:row.qty===1?[]:[{...row,qty:row.qty-1}]));
@@ -76,7 +77,7 @@ export default function Page() {
     <a className="skip" href="#conteudo">Pular para o conteúdo</a>
     <div className="concept">ATELIÊ FICTÍCIO · PROJETO CONCEITUAL DE PORTFÓLIO</div>
     <header className="frame"><a href="#inicio" className="logo">casa <i>argila</i></a><nav aria-label="Menu principal"><a href="#colecao">Coleção</a><a href="#sacola">Sacola ({qty})</a></nav></header>
-    <main id="conteudo">
+    <main id="conteudo" tabIndex={-1}>
       <section className="hero frame" id="inicio">
         <div className="copy"><p className="eyebrow">COLEÇÃO FORMA DO DIA</p><h1>Terra feita <i>objeto.</i></h1><p className="lead">Texturas de terra, curvas sem pressa. Uma coleção imaginada para o ritual de todos os dias.</p><a className="primary" href="#colecao">Explorar a coleção</a></div>
         <figure className="cover"><img src={photos+'/hero.webp'} alt="Canecas artesanais agrupadas sobre uma superfície de madeira" width="1200" height="900" fetchPriority="high"/><figcaption>REFERÊNCIA VISUAL · CERÂMICA ARTESANAL</figcaption></figure>
@@ -90,13 +91,13 @@ export default function Page() {
             <div className="product-copy"><p className="eyebrow">SÉRIE CERÂMICA</p><h3>{picked.name}</h3><p className="description">{picked.description}</p><p className="price">{money.format(picked.price)}</p>
               <p id="finish-label" className="finish-label">Acabamento: <b>{finishes[finish].name}</b></p>
               <div className="finishes" role="group" aria-labelledby="finish-label">{finishes.map((item,index)=><button title={item.name} aria-label={item.name} aria-pressed={finish===index} key={item.name} onClick={()=>setFinish(index)} style={{backgroundColor:item.color}} />)}</div>
-              <button className="primary" onClick={add}>Adicionar à sacola</button><p className="small">Demonstração sem pagamento ou cadastro.</p><p className="sr-only" role="status">{announcement}</p>
+              <button className="primary" onClick={()=>addRow(product,finish)}>Adicionar à sacola</button><p className="small">Demonstração sem pagamento ou cadastro.</p><p className="sr-only" role="status">{announcement}</p>
             </div>
           </div>
         </div>
       </section>
-      <section className="atelier frame" id="atelie"><div className="materials"><ObjectArt kind="vaso" finish={finishes[0]} id="materials"/></div><div><p className="eyebrow">DO BARRO À PEÇA</p><h2>Feita de gesto e matéria.</h2><p>Imaginamos a Casa Argila como um pequeno ateliê de formas utilitárias e superfícies táteis, com tons inspirados no barro, na folha e na areia.</p><details><summary>O que muda com o acabamento?</summary><p>A silhueta é a mesma. A variação troca a paleta da peça e aparece separadamente na sacola.</p></details><details><summary>As peças da vitrine são reais?</summary><p>Não. As imagens da vitrine são ilustrações em SVG. A foto editorial representa a atmosfera do conceito, não um catálogo real.</p></details></div></section>
-      <section className="basket frame" id="sacola"><h2>Sua sacola.</h2>{cart.length===0?<p>Nenhuma peça adicionada.</p>:<ul>{cart.map(row=><li key={row.key}><div><b>{pieces[row.product].name}</b><span>{finishes[row.finish].name} · {row.qty} {row.qty===1?'unidade':'unidades'}</span></div><div className="cart-right"><b>{money.format(pieces[row.product].price*row.qty)}</b><button aria-label={`Remover uma unidade de ${pieces[row.product].name}, ${finishes[row.finish].name}`} onClick={()=>remove(row.key)}>Remover 1</button></div></li>)}</ul>}<p className="subtotal">Subtotal simulado <b>{money.format(total)}</b></p></section>
+      <section className="atelier frame" id="atelie"><figure className="materials"><img src={photos+'/editorial.webp'} alt="Pilha de pratos e tigelas cerâmicas sobre uma mesa de madeira" width="1100" height="733" loading="lazy"/><figcaption>Formas utilitárias · fotografia de referência</figcaption></figure><div><p className="eyebrow">DO BARRO À PEÇA</p><h2>Feita de gesto e matéria.</h2><p>Imaginamos a Casa Argila como um pequeno ateliê de formas utilitárias e superfícies táteis, com tons inspirados no barro, na folha e na areia.</p><details><summary>O que muda com o acabamento?</summary><p>A silhueta é a mesma. A variação troca a paleta da peça e aparece separadamente na sacola.</p></details><details><summary>As peças da vitrine são reais?</summary><p>Não. As imagens da vitrine são ilustrações em SVG. A foto editorial representa a atmosfera do conceito, não um catálogo real.</p></details></div></section>
+      <section className="basket frame" id="sacola"><h2>Sua sacola.</h2>{cart.length===0?<p>Nenhuma peça adicionada.</p>:<ul>{cart.map(row=><li key={row.key}><div><b>{pieces[row.product].name}</b><span>{finishes[row.finish].name} · {row.qty} {row.qty===1?'unidade':'unidades'}</span></div><div className="cart-right"><b>{money.format(pieces[row.product].price*row.qty)}</b><div className="quantity" role="group" aria-label={`Quantidade de ${pieces[row.product].name}, acabamento ${finishes[row.finish].name}`}><button type="button" aria-label={`Remover uma unidade de ${pieces[row.product].name}, ${finishes[row.finish].name}`} onClick={()=>remove(row.key)}>−</button><button type="button" aria-label={`Adicionar uma unidade de ${pieces[row.product].name}, ${finishes[row.finish].name}`} onClick={()=>addRow(row.product,row.finish)}>+</button></div></div></li>)}</ul>}<p className="subtotal" aria-live="polite">Subtotal simulado <b>{money.format(total)}</b></p></section>
     </main>
     <footer><div className="frame"><b>casa argila</b><p>Marca e preços fictícios. Nenhum pedido é enviado, e nenhuma informação pessoal é solicitada.</p><a href="#inicio">Voltar ao início</a></div></footer>
   </>;

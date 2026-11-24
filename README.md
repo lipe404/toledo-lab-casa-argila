@@ -22,3 +22,5 @@ Para GitHub Pages, em **Settings → Pages**, selecione **GitHub Actions**, ent�
 Para Vercel, importe o repositório como projeto Next.js sem definir `PAGES_BASE_PATH`.
 
 Fotografia editorial: [Oleg Prachuk, Pexels](https://www.pexels.com/photo/close-up-of-ceramic-mugs-standing-on-a-wooden-surface-15440831/), [licença](https://www.pexels.com/license/).
+
+Fotografia secundária: [PNW Production, Pexels](https://www.pexels.com/photo/stack-of-ceramic-bowl-and-plates-on-wooden-surface-8251786/).
